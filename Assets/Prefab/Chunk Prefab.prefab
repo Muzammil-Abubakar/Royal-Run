@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6026271780727953644}
   - component: {fileID: 8822391337199755741}
   - component: {fileID: 4956975974878494831}
+  - component: {fileID: 8221227778905565795}
   m_Layer: 0
   m_Name: Wall (3)
   m_TagString: Untagged
@@ -90,6 +91,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8221227778905565795
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98569231994151029}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.391527, y: 1.7764335, z: 0.9000727}
+  m_Center: {x: 0, y: -0.014071265, z: 0}
 --- !u!1 &2247408586434304589
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +123,7 @@ GameObject:
   - component: {fileID: 1475974097466032375}
   - component: {fileID: 2581808377838112594}
   - component: {fileID: 301910789956828056}
+  - component: {fileID: 3054699692209565738}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -180,6 +203,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3054699692209565738
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2247408586434304589}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.391527, y: 1.7764335, z: 0.9000727}
+  m_Center: {x: 0, y: -0.014071265, z: 0}
 --- !u!1 &4583186985723559453
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,6 +453,7 @@ GameObject:
   - component: {fileID: 6984924394361298100}
   - component: {fileID: 7374661948930979345}
   - component: {fileID: 6311744882861919485}
+  - component: {fileID: 5989622389510742731}
   m_Layer: 0
   m_Name: Wall (1)
   m_TagString: Untagged
@@ -488,6 +533,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5989622389510742731
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730477754477297979}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.391527, y: 1.7764335, z: 0.9000727}
+  m_Center: {x: 0, y: -0.014071265, z: 0}
 --- !u!1 &6458313723188530500
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +709,7 @@ GameObject:
   - component: {fileID: 7122700952085000225}
   - component: {fileID: 5226751106567483661}
   - component: {fileID: 8754688241006730340}
+  - component: {fileID: 7527595196952541816}
   m_Layer: 0
   m_Name: Wall (2)
   m_TagString: Untagged
@@ -722,3 +789,24 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7527595196952541816
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8543494435508164266}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.391527, y: 1.7764335, z: 0.9000727}
+  m_Center: {x: 0, y: -0.014071265, z: 0}
