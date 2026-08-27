@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -7,9 +8,18 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private int totalChunks = 10;
     [SerializeField] private float chunkDistance = 10f;
 
+    [SerializeField] private float moveSpeed = 5f;
+
+    private List<GameObject> chunks = new List<GameObject>();
+
     void Start()
     {
         GenerateChunks();
+    }
+
+    void Update()
+    {
+        MoveChunks();
     }
 
     void GenerateChunks()
@@ -22,7 +32,25 @@ public class LevelGenerator : MonoBehaviour
                 i * chunkDistance
             );
 
-            Instantiate(chunkPrefab, spawnPosition, Quaternion.identity, chunkParent);
+            GameObject chunk = Instantiate(
+                chunkPrefab,
+                spawnPosition,
+                Quaternion.identity,
+                chunkParent
+            );
+
+            chunks.Add(chunk);
+        }
+    }
+
+    void MoveChunks()
+    {
+        foreach (GameObject chunk in chunks)
+        {
+            chunk.transform.Translate(
+                Vector3.back * moveSpeed * Time.deltaTime,
+                Space.World
+            );
         }
     }
 }
