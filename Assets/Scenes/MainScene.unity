@@ -558,7 +558,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bad34d3ff006444896f617729ab3219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawner
-  obstacle: {fileID: 9118757842905214662, guid: b3dce8ff6f355b3429e4eee658aaf1b2, type: 3}
+  obstacles:
+  - {fileID: 8406248405441053965, guid: a67ef638a3454194ca7ad66fb621d8cf, type: 3}
+  - {fileID: 9118757842905214662, guid: b3dce8ff6f355b3429e4eee658aaf1b2, type: 3}
+  spawnRange: 3.5
 --- !u!1001 &4020211279652975017
 PrefabInstance:
   m_ObjectHideFlags: 0
