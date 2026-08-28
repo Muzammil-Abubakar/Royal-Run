@@ -600,6 +600,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chunk
   fence: {fileID: 8908776859450744581, guid: e6e9d9a81ff8c4b449b3c89f5fdc5494, type: 3}
+  apple: {fileID: 7889513641024566967, guid: 4f58761ac63b8674e8b804e141670759, type: 3}
+  coin: {fileID: 638909227625996628, guid: 99510f0f48a2393499abdaaead8a7589, type: 3}
+  pickupChance: 0.75
 --- !u!1 &7151923461032933405
 GameObject:
   m_ObjectHideFlags: 0

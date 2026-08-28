@@ -416,7 +416,7 @@ MonoBehaviour:
   chunkParent: {fileID: 1086385263}
   cameraTransform: {fileID: 330585546}
   totalChunks: 10
-  chunkDistance: 10.2
+  chunkDistance: 10.7
   moveSpeed: 5
   removalOffset: 10
 --- !u!4 &829280111
