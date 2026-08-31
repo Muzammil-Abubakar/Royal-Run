@@ -4,6 +4,7 @@ using System.Collections;
 public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] obstacles;
+    [SerializeField] private Transform obstacleParent;
     [SerializeField] private float spawnRange = 3.5f;
 
     private void Start()
@@ -15,7 +16,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         while (true)
         {
-            // Wait a random amount of time between 1 and 2 seconds
+            // Wait a random amount of time between 0.3 and 0.6 seconds
             yield return new WaitForSeconds(Random.Range(0.3f, 0.6f));
 
             // Random X position relative to this object's position
@@ -34,8 +35,8 @@ public class ObstacleSpawner : MonoBehaviour
                 Random.Range(0f, 360f)
             );
 
-            // Spawn the obstacle
-            Instantiate(obstacle, spawnPosition, randomRotation);
+            // Spawn the obstacle as a child of Obstacle Parent
+            Instantiate(obstacle, spawnPosition, randomRotation, obstacleParent);
         }
     }
 }
