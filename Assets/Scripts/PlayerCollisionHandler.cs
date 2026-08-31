@@ -1,16 +1,36 @@
+
 using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private const string HIT_PARAMETER = "Hit";
+
+    [SerializeField] private Animator animator;
+    [SerializeField] private float hitCooldown = 1.5f;
+    [SerializeField] private LayerMask environmentLayer;
+
+    private float lastHitTime = -Mathf.Infinity;
+
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        TryTriggerHit();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if ((environmentLayer.value & (1 << other.gameObject.layer)) == 0)
+            return;
+
+        TryTriggerHit();
+    }
+
+    private void TryTriggerHit()
+    {
+        if (Time.time < lastHitTime + hitCooldown)
+            return;
+
+        lastHitTime = Time.time;
+        animator.SetTrigger(HIT_PARAMETER);
     }
 }
+
