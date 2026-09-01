@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DestroyOnPlayer : MonoBehaviour
+public class Pickup : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
