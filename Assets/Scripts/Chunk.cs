@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class Chunk : MonoBehaviour
@@ -12,8 +11,16 @@ public class Chunk : MonoBehaviour
 
     private readonly float[] lanePositions = { -2.5f, 0f, 2.5f };
 
-    private void Start()
+    // This is controlled by the LevelGenerator.
+    private bool spawningEnabled = false;
+
+    public void Initialize(bool allowSpawning)
     {
+        spawningEnabled = allowSpawning;
+
+        if (!spawningEnabled)
+            return;
+
         bool[] occupiedLanes = GenerateFences();
 
         GeneratePickup(occupiedLanes);
@@ -41,7 +48,12 @@ public class Chunk : MonoBehaviour
             Vector3 spawnPosition = transform.position;
             spawnPosition.x += lanePositions[randomIndex];
 
-            Instantiate(fence, spawnPosition, Quaternion.identity, transform);
+            Instantiate(
+                fence,
+                spawnPosition,
+                Quaternion.identity,
+                transform
+            );
         }
 
         return occupiedLanes;
@@ -83,7 +95,12 @@ public class Chunk : MonoBehaviour
             Vector3 spawnPosition = transform.position;
             spawnPosition.x += lanePositions[selectedLane];
 
-            Instantiate(apple, spawnPosition, Quaternion.identity, transform);
+            Instantiate(
+                apple,
+                spawnPosition,
+                Quaternion.identity,
+                transform
+            );
         }
     }
 
@@ -94,16 +111,24 @@ public class Chunk : MonoBehaviour
         const float coinGap = 0.7f;
 
         // Calculate how many coin positions fit between -4 and +4
-        int maxCoins = Mathf.FloorToInt((endZ - startZ) / coinGap) + 1;
+        int maxCoins = Mathf.FloorToInt(
+            (endZ - startZ) / coinGap
+        ) + 1;
 
         // Minimum of 4 coins, maximum based on available space
-        int coinCount = Random.Range(4, maxCoins + 1);
+        int coinCount = Random.Range(
+            4,
+            maxCoins + 1
+        );
 
-        // Pick a random starting point between -4 and +4
-        // while ensuring the entire coin chain stays inside the limits.
+        // Pick a random starting point while ensuring
+        // the entire coin chain stays inside the limits.
         int maxStartIndex = maxCoins - coinCount;
 
-        int startIndex = Random.Range(0, maxStartIndex + 1);
+        int startIndex = Random.Range(
+            0,
+            maxStartIndex + 1
+        );
 
         float actualStartZ = startZ + (startIndex * coinGap);
 
@@ -117,7 +142,12 @@ public class Chunk : MonoBehaviour
             // Spawn coins along the Z axis
             spawnPosition.z += actualStartZ + (i * coinGap);
 
-            Instantiate(coin, spawnPosition, Quaternion.identity, transform);
+            Instantiate(
+                coin,
+                spawnPosition,
+                Quaternion.identity,
+                transform
+            );
         }
     }
 }
