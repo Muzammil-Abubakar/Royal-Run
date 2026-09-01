@@ -480,12 +480,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelGenerator
   chunkPrefab: {fileID: 6458313723188530500, guid: 95c66c18bcd66ff4f8445668a6e69e89, type: 3}
   chunkParent: {fileID: 1086385263}
-  cameraTransform: {fileID: 330585546}
-  totalChunks: 10
   chunkDistance: 10.7
+  totalChunks: 20
+  emptyStartingChunks: 6
   moveSpeed: 16
   minMoveSpeed: 4
   maxMoveSpeed: 24
+  cameraTransform: {fileID: 330585546}
   removalOffset: 10
 --- !u!4 &829280111
 Transform:

@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 5409892772146990701}
   - component: {fileID: 6941447619365887802}
   m_Layer: 0
-  m_Name: Cobblestone
+  m_Name: Floor1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364,7 +364,7 @@ GameObject:
   - component: {fileID: 6029565694203381382}
   - component: {fileID: 8810513455183154207}
   m_Layer: 0
-  m_Name: Cobblestone
+  m_Name: Floor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -603,6 +603,12 @@ MonoBehaviour:
   apple: {fileID: 7889513641024566967, guid: 4f58761ac63b8674e8b804e141670759, type: 3}
   coin: {fileID: 638909227625996628, guid: 99510f0f48a2393499abdaaead8a7589, type: 3}
   pickupChance: 0.75
+  floorCollider: {fileID: 1431328977695955522}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  forceAmount: 2
+  forceInterval: 1
 --- !u!1 &7151923461032933405
 GameObject:
   m_ObjectHideFlags: 0

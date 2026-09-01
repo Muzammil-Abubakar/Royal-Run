@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
+    [Header("Chunk Spawning")]
     [SerializeField] private GameObject fence;
     [SerializeField] private GameObject apple;
     [SerializeField] private GameObject coin;
@@ -9,10 +10,26 @@ public class Chunk : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     private float pickupChance = 0.75f;
 
+    [Header("Floor Collider")]
+    [SerializeField] private Collider floorCollider;
+
+    [Header("Obstacle Force")]
+    [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField] private float forceAmount = 2f;
+    [SerializeField] private float forceInterval = 1f;
+
     private readonly float[] lanePositions = { -2.5f, 0f, 2.5f };
 
-    // This is controlled by the LevelGenerator.
     private bool spawningEnabled = false;
+
+    private void Start()
+    {
+        InvokeRepeating(
+            nameof(ApplyForceToObstacles),
+            forceInterval,
+            forceInterval
+        );
+    }
 
     public void Initialize(bool allowSpawning)
     {
@@ -26,9 +43,36 @@ public class Chunk : MonoBehaviour
         GeneratePickup(occupiedLanes);
     }
 
+    private void ApplyForceToObstacles()
+    {
+        if (floorCollider == null)
+            return;
+
+        Bounds bounds = floorCollider.bounds;
+
+        Collider[] obstacles = Physics.OverlapBox(
+            bounds.center,
+            bounds.extents,
+            Quaternion.identity,
+            obstacleLayer
+        );
+
+        foreach (Collider obstacle in obstacles)
+        {
+            Rigidbody rb = obstacle.attachedRigidbody;
+
+            if (rb == null)
+                continue;
+
+            rb.AddForce(
+                Vector3.up * forceAmount,
+                ForceMode.Impulse
+            );
+        }
+    }
+
     private bool[] GenerateFences()
     {
-        // Randomly choose 0, 1, or 2 fences
         int fenceCount = Random.Range(0, 3);
 
         bool[] occupiedLanes = new bool[lanePositions.Length];
@@ -61,11 +105,9 @@ public class Chunk : MonoBehaviour
 
     private void GeneratePickup(bool[] occupiedLanes)
     {
-        // Don't spawn a pickup on every chunk
         if (Random.value > pickupChance)
             return;
 
-        // Find free lanes
         int[] freeLanes = new int[lanePositions.Length];
         int freeLaneCount = 0;
 
@@ -78,14 +120,12 @@ public class Chunk : MonoBehaviour
             }
         }
 
-        // No free lanes
         if (freeLaneCount == 0)
             return;
 
-        // Choose ONE free lane
-        int selectedLane = freeLanes[Random.Range(0, freeLaneCount)];
+        int selectedLane =
+            freeLanes[Random.Range(0, freeLaneCount)];
 
-        // 50/50 chance of apple or coins
         if (Random.value < 0.5f)
         {
             GenerateCoins(selectedLane);
@@ -110,19 +150,15 @@ public class Chunk : MonoBehaviour
         const float endZ = 4f;
         const float coinGap = 0.7f;
 
-        // Calculate how many coin positions fit between -4 and +4
         int maxCoins = Mathf.FloorToInt(
             (endZ - startZ) / coinGap
         ) + 1;
 
-        // Minimum of 4 coins, maximum based on available space
         int coinCount = Random.Range(
             4,
             maxCoins + 1
         );
 
-        // Pick a random starting point while ensuring
-        // the entire coin chain stays inside the limits.
         int maxStartIndex = maxCoins - coinCount;
 
         int startIndex = Random.Range(
@@ -130,17 +166,18 @@ public class Chunk : MonoBehaviour
             maxStartIndex + 1
         );
 
-        float actualStartZ = startZ + (startIndex * coinGap);
+        float actualStartZ =
+            startZ + (startIndex * coinGap);
 
         for (int i = 0; i < coinCount; i++)
         {
             Vector3 spawnPosition = transform.position;
 
-            // Stay in the selected free lane
-            spawnPosition.x += lanePositions[selectedLane];
+            spawnPosition.x +=
+                lanePositions[selectedLane];
 
-            // Spawn coins along the Z axis
-            spawnPosition.z += actualStartZ + (i * coinGap);
+            spawnPosition.z +=
+                actualStartZ + (i * coinGap);
 
             Instantiate(
                 coin,
@@ -149,5 +186,10 @@ public class Chunk : MonoBehaviour
                 transform
             );
         }
+    }
+
+    private void OnDestroy()
+    {
+        CancelInvoke(nameof(ApplyForceToObstacles));
     }
 }
