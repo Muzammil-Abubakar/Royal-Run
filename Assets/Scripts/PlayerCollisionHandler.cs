@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PlayerCollisionHandler : MonoBehaviour
@@ -9,7 +8,13 @@ public class PlayerCollisionHandler : MonoBehaviour
     [SerializeField] private float hitCooldown = 1.5f;
     [SerializeField] private LayerMask environmentLayer;
 
+    private LevelGenerator levelGenerator;
     private float lastHitTime = -Mathf.Infinity;
+
+    private void Start()
+    {
+        levelGenerator = FindAnyObjectByType<LevelGenerator>();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -30,7 +35,9 @@ public class PlayerCollisionHandler : MonoBehaviour
             return;
 
         lastHitTime = Time.time;
+
         animator.SetTrigger(HIT_PARAMETER);
+
+        levelGenerator.DecreaseMoveSpeed(1f);
     }
 }
-

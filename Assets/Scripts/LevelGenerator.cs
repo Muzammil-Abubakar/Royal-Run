@@ -9,7 +9,11 @@ public class LevelGenerator : MonoBehaviour
 
     [SerializeField] private int totalChunks = 10;
     [SerializeField] private float chunkDistance = 10f;
-    [SerializeField] private float moveSpeed = 5f;
+
+    [SerializeField] private float moveSpeed = 16f;
+    [SerializeField] private float minMoveSpeed = 8f;
+    [SerializeField] private float maxMoveSpeed = 24f;
+
     [SerializeField] private float removalOffset = 10f;
 
     private List<GameObject> chunks = new List<GameObject>();
@@ -97,5 +101,23 @@ public class LevelGenerator : MonoBehaviour
         );
 
         chunks.Add(newChunk);
+    }
+
+    public void IncreaseMoveSpeed(float amount)
+    {
+        moveSpeed = Mathf.Clamp(
+            moveSpeed + amount,
+            minMoveSpeed,
+            maxMoveSpeed
+        );
+    }
+
+    public void DecreaseMoveSpeed(float amount)
+    {
+        moveSpeed = Mathf.Clamp(
+            moveSpeed - amount,
+            minMoveSpeed,
+            maxMoveSpeed
+        );
     }
 }

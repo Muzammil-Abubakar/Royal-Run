@@ -483,7 +483,9 @@ MonoBehaviour:
   cameraTransform: {fileID: 330585546}
   totalChunks: 10
   chunkDistance: 10.7
-  moveSpeed: 5
+  moveSpeed: 16
+  minMoveSpeed: 4
+  maxMoveSpeed: 24
   removalOffset: 10
 --- !u!4 &829280111
 Transform:

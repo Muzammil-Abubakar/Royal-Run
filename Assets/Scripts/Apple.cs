@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class Apple : MonoBehaviour
+public class Apple : Pickup
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private LevelGenerator levelGenerator;
+
+    private void Start()
     {
-        
+        levelGenerator = FindAnyObjectByType<LevelGenerator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnPickup(Collider player)
     {
-        
+        levelGenerator.IncreaseMoveSpeed(1f);
     }
 }
