@@ -17,6 +17,9 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private float minMoveSpeed = 8f;
     [SerializeField] private float maxMoveSpeed = 24f;
 
+    [Header("Camera")]
+    [SerializeField] private CameraController cameraController;
+
     [Header("Chunk Cleanup")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float removalOffset = 10f;
@@ -26,6 +29,8 @@ public class LevelGenerator : MonoBehaviour
     void Start()
     {
         GenerateChunks();
+
+        UpdateCameraSpeed();
     }
 
     void Update()
@@ -52,8 +57,6 @@ public class LevelGenerator : MonoBehaviour
 
             chunks.Add(chunk);
 
-            // The first 12 chunks are completely empty.
-            // Chunk 12 and everything after it can spawn normally.
             Chunk chunkScript = chunk.GetComponent<Chunk>();
 
             if (chunkScript != null)
@@ -66,7 +69,6 @@ public class LevelGenerator : MonoBehaviour
 
     void MoveChunks()
     {
-        // Move all chunks backward.
         foreach (GameObject chunk in chunks)
         {
             chunk.transform.Translate(
@@ -75,7 +77,6 @@ public class LevelGenerator : MonoBehaviour
             );
         }
 
-        // Remove chunks that have gone behind the camera.
         for (int i = chunks.Count - 1; i >= 0; i--)
         {
             GameObject chunk = chunks[i];
@@ -100,7 +101,6 @@ public class LevelGenerator : MonoBehaviour
 
     void SpawnChunkAtFront()
     {
-        // The last element is always the furthest-forward chunk.
         float furthestZ = chunks[chunks.Count - 1].transform.position.z;
 
         Vector3 spawnPosition = new Vector3(
@@ -118,8 +118,6 @@ public class LevelGenerator : MonoBehaviour
 
         chunks.Add(newChunk);
 
-        // Newly generated chunks are allowed to spawn obstacles
-        // and pickups.
         Chunk chunkScript = newChunk.GetComponent<Chunk>();
 
         if (chunkScript != null)
@@ -135,6 +133,8 @@ public class LevelGenerator : MonoBehaviour
             minMoveSpeed,
             maxMoveSpeed
         );
+
+        UpdateCameraSpeed();
     }
 
     public void DecreaseMoveSpeed(float amount)
@@ -144,6 +144,16 @@ public class LevelGenerator : MonoBehaviour
             minMoveSpeed,
             maxMoveSpeed
         );
+
+        UpdateCameraSpeed();
+    }
+
+    private void UpdateCameraSpeed()
+    {
+        cameraController.SetSpeed(
+            moveSpeed,
+            minMoveSpeed,
+            maxMoveSpeed
+        );
     }
 }
-
