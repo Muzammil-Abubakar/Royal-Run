@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using Unity.Cinemachine;
 
@@ -5,8 +6,12 @@ public class CameraController : MonoBehaviour
 {
     [Header("FOV Settings")]
     [SerializeField] private float minFOV = 45f;
-    [SerializeField] private float maxFOV = 80f;
+    [SerializeField] private float maxFOV = 100f;
     [SerializeField] private float fovLerpSpeed = 5f;
+
+    [Header("Speed Effect")]
+    [SerializeField] private ParticleSystem speedEffect;
+    [SerializeField] private float speedEffectFOV = 85f;
 
     private CinemachineCamera cinemachineCamera;
 
@@ -18,6 +23,8 @@ public class CameraController : MonoBehaviour
 
         targetFOV = maxFOV;
         cinemachineCamera.Lens.FieldOfView = targetFOV;
+
+        SetSpeedEffect(false);
     }
 
     void Update()
@@ -47,5 +54,29 @@ public class CameraController : MonoBehaviour
             maxFOV,
             speedPercentage
         );
+
+        UpdateSpeedEffect();
+    }
+
+    private void UpdateSpeedEffect()
+    {
+        if (targetFOV > speedEffectFOV)
+        {
+            SetSpeedEffect(true);
+        }
+        else
+        {
+            SetSpeedEffect(false);
+        }
+    }
+
+    private void SetSpeedEffect(bool enabled)
+    {
+        if (speedEffect == null)
+            return;
+
+        var emission = speedEffect.emission;
+        emission.enabled = enabled;
     }
 }
+
