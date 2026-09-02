@@ -4,14 +4,16 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
-    [SerializeField] private float timeDuration;
+    [SerializeField] private TMP_Text gameOver;
+    [SerializeField] private float timeDuration = 5f;
 
     private float currentTime;
 
     void Start()
     {
-        timeDuration = 5f;
         currentTime = timeDuration;
+
+        gameOver.gameObject.SetActive(false);
 
         UpdateTimerDisplay();
     }
@@ -22,10 +24,20 @@ public class GameManager : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
 
-            if (currentTime < 0f)
+            if (currentTime <= 0f)
+            {
                 currentTime = 0f;
+                UpdateTimerDisplay();
 
-            UpdateTimerDisplay();
+                gameOver.gameObject.SetActive(true);
+
+                // Slow the game down
+                Time.timeScale = 0.2f;
+            }
+            else
+            {
+                UpdateTimerDisplay();
+            }
         }
     }
 

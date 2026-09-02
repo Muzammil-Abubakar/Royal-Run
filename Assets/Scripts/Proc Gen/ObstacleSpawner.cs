@@ -19,10 +19,10 @@ public class ObstacleSpawner : MonoBehaviour
             // Wait a random amount of time between 0.3 and 0.6 seconds
             yield return new WaitForSeconds(Random.Range(0.3f, 0.6f));
 
-            // Random X position relative to this object's position
+            // Random X position relative to the Obstacle Parent's position
             float randomX = Random.Range(-spawnRange, spawnRange);
 
-            Vector3 spawnPosition = transform.position;
+            Vector3 spawnPosition = obstacleParent.position;
             spawnPosition.x += randomX;
 
             // Choose a random obstacle
