@@ -2,13 +2,15 @@ using UnityEngine;
 
 public class Coin : Pickup
 {
+    private Scoreboard scoreboard;
+
+    public void Init(Scoreboard scoreboard)
+    {
+        this.scoreboard = scoreboard;
+    }
+
     protected override void OnPickup(Collider player)
     {
-        Scoreboard scoreboard = FindAnyObjectByType<Scoreboard>();
-
-        if (scoreboard != null)
-        {
-            scoreboard.AddScore(100);
-        }
+        scoreboard.AddScore(100);
     }
 }

@@ -38,6 +38,11 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private CameraController cameraController;
 
 
+    [Header("Score")]
+    [Tooltip("The scoreboard used to track the player's score.")]
+    [SerializeField] private Scoreboard scoreboard;
+
+
     [Header("Chunk Cleanup")]
     [Tooltip("The Transform of the camera used to determine when chunks have moved behind the player.")]
     [SerializeField] private Transform cameraTransform;
@@ -87,7 +92,12 @@ public class LevelGenerator : MonoBehaviour
             if (chunkScript != null)
             {
                 bool allowSpawning = i >= emptyStartingChunks;
-                chunkScript.Initialize(allowSpawning);
+
+                chunkScript.Initialize(
+                    allowSpawning,
+                    this,
+                    scoreboard
+                );
             }
         }
     }
@@ -128,7 +138,8 @@ public class LevelGenerator : MonoBehaviour
 
     void SpawnChunkAtFront()
     {
-        float furthestZ = chunks[chunks.Count - 1].transform.position.z;
+        float furthestZ =
+            chunks[chunks.Count - 1].transform.position.z;
 
         Vector3 spawnPosition = new Vector3(
             0f,
@@ -145,11 +156,16 @@ public class LevelGenerator : MonoBehaviour
 
         chunks.Add(newChunk);
 
-        Chunk chunkScript = newChunk.GetComponent<Chunk>();
+        Chunk chunkScript =
+            newChunk.GetComponent<Chunk>();
 
         if (chunkScript != null)
         {
-            chunkScript.Initialize(true);
+            chunkScript.Initialize(
+                true,
+                this,
+                scoreboard
+            );
         }
     }
 
@@ -187,3 +203,4 @@ public class LevelGenerator : MonoBehaviour
         );
     }
 }
+

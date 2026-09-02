@@ -22,6 +22,9 @@ public class Chunk : MonoBehaviour
 
     private bool spawningEnabled = false;
 
+    private LevelGenerator levelGenerator;
+    private Scoreboard scoreboard;
+
     private void Start()
     {
         InvokeRepeating(
@@ -31,9 +34,15 @@ public class Chunk : MonoBehaviour
         );
     }
 
-    public void Initialize(bool allowSpawning)
+    public void Initialize(
+        bool allowSpawning,
+        LevelGenerator levelGenerator,
+        Scoreboard scoreboard)
     {
         spawningEnabled = allowSpawning;
+
+        this.levelGenerator = levelGenerator;
+        this.scoreboard = scoreboard;
 
         if (!spawningEnabled)
             return;
@@ -135,12 +144,17 @@ public class Chunk : MonoBehaviour
             Vector3 spawnPosition = transform.position;
             spawnPosition.x += lanePositions[selectedLane];
 
-            Instantiate(
+            GameObject appleObject = Instantiate(
                 apple,
                 spawnPosition,
                 Quaternion.identity,
                 transform
             );
+
+            Apple applePickup =
+                appleObject.GetComponent<Apple>();
+
+            applePickup.Init(levelGenerator);
         }
     }
 
@@ -179,12 +193,17 @@ public class Chunk : MonoBehaviour
             spawnPosition.z +=
                 actualStartZ + (i * coinGap);
 
-            Instantiate(
+            GameObject coinObject = Instantiate(
                 coin,
                 spawnPosition,
                 Quaternion.identity,
                 transform
             );
+
+            Coin coinPickup =
+                coinObject.GetComponent<Coin>();
+
+            coinPickup.Init(scoreboard);
         }
     }
 
@@ -193,3 +212,4 @@ public class Chunk : MonoBehaviour
         CancelInvoke(nameof(ApplyForceToObstacles));
     }
 }
+
