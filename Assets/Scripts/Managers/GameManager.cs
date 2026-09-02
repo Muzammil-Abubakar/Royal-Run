@@ -4,22 +4,33 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text timerText;
-    [SerializeField] private TMP_Text gameOver;
+    [SerializeField] private TMP_Text gameOverText;
     [SerializeField] private float timeDuration = 5f;
+
+    [Header("Player")]
+    [SerializeField] private PlayerController playerController;
 
     private float currentTime;
 
-    void Start()
+    public bool GameOver { get; private set; }
+
+    private void Start()
     {
         currentTime = timeDuration;
+        GameOver = false;
 
-        gameOver.gameObject.SetActive(false);
+        gameOverText.gameObject.SetActive(false);
 
         UpdateTimerDisplay();
     }
 
-    void Update()
+    private void Update()
     {
+        if (GameOver)
+        {
+            return;
+        }
+
         if (currentTime > 0f)
         {
             currentTime -= Time.deltaTime;
@@ -29,10 +40,7 @@ public class GameManager : MonoBehaviour
                 currentTime = 0f;
                 UpdateTimerDisplay();
 
-                gameOver.gameObject.SetActive(true);
-
-                // Slow the game down
-                Time.timeScale = 0.2f;
+                PlayerGameOver();
             }
             else
             {
@@ -41,9 +49,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PlayerGameOver()
+    {
+        GameOver = true;
+
+        gameOverText.gameObject.SetActive(true);
+
+        // Disable player control
+        if (playerController != null)
+        {
+            playerController.enabled = false;
+        }
+
+        // Slow the game down
+        Time.timeScale = 0.2f;
+    }
+
     private void UpdateTimerDisplay()
     {
         timerText.text = currentTime.ToString("F2");
     }
 }
-
