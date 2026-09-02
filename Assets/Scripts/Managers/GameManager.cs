@@ -49,6 +49,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AddTime(float amount)
+    {
+        if (GameOver)
+        {
+            return;
+        }
+
+        currentTime += amount;
+        UpdateTimerDisplay();
+    }
+
     public void PlayerGameOver()
     {
         GameOver = true;
@@ -70,3 +81,4 @@ public class GameManager : MonoBehaviour
         timerText.text = currentTime.ToString("F2");
     }
 }
+
