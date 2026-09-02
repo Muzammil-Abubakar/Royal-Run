@@ -1,11 +1,15 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
     [Header("Chunk Generation")]
-    [Tooltip("The prefab used to create each level chunk.")]
-    [SerializeField] private GameObject chunkPrefab;
+    [Tooltip("Normal level chunks. One of these will be randomly selected whenever a normal chunk is generated.")]
+    [SerializeField] private GameObject[] normalChunks;
+
+    [Tooltip("The special checkpoint chunk.")]
+    [SerializeField] private GameObject checkpointChunk;
 
     [Tooltip("The parent Transform that all generated chunks will be placed under.")]
     [SerializeField] private Transform chunkParent;
@@ -15,6 +19,22 @@ public class LevelGenerator : MonoBehaviour
 
     [Tooltip("The total number of chunks generated when the level starts.")]
     [SerializeField] private int totalChunks = 20;
+
+
+    [Header("Checkpoint Generation")]
+    [Tooltip("The initial chance of spawning a checkpoint.")]
+    [Range(0f, 100f)]
+    [SerializeField] private float checkpointChance = 2f;
+
+    [Tooltip("How much the checkpoint chance increases after a failed checkpoint roll.")]
+    [Range(0f, 100f)]
+    [SerializeField] private float checkpointChanceIncrease = 2f;
+
+    [Tooltip("Minimum number of chunks that must spawn between checkpoints.")]
+    [SerializeField] private int minimumCheckpointDistance = 3;
+
+    [Tooltip("Maximum number of eligible chunks allowed between checkpoints. The checkpoint becomes guaranteed after this point.")]
+    [SerializeField] private int maximumCheckpointDistance = 10;
 
 
     [Header("Starting Area")]
@@ -53,9 +73,14 @@ public class LevelGenerator : MonoBehaviour
 
     private List<GameObject> chunks = new List<GameObject>();
 
+    private float currentCheckpointChance;
+    private int chunksSinceCheckpoint;
+
 
     void Start()
     {
+        currentCheckpointChance = checkpointChance;
+
         GenerateChunks();
 
         UpdateCameraSpeed();
@@ -77,6 +102,14 @@ public class LevelGenerator : MonoBehaviour
                 0f,
                 i * chunkDistance
             );
+
+            GameObject chunkPrefab = GetChunkPrefab(i);
+
+            if (chunkPrefab == null)
+            {
+                Debug.LogError("LevelGenerator: No valid chunk prefab was found.");
+                continue;
+            }
 
             GameObject chunk = Instantiate(
                 chunkPrefab,
@@ -103,10 +136,90 @@ public class LevelGenerator : MonoBehaviour
     }
 
 
+    GameObject GetChunkPrefab(int chunkIndex)
+    {
+        if (chunkIndex < emptyStartingChunks)
+        {
+            return GetRandomNormalChunk();
+        }
+
+        return GetRandomChunk();
+    }
+
+
+    GameObject GetRandomChunk()
+    {
+        // Prevent checkpoints from spawning too close together.
+        if (chunksSinceCheckpoint < minimumCheckpointDistance)
+        {
+            chunksSinceCheckpoint++;
+
+            return GetRandomNormalChunk();
+        }
+
+        // Guarantee a checkpoint once the maximum distance is reached.
+        if (chunksSinceCheckpoint >= maximumCheckpointDistance)
+        {
+            SpawnedCheckpoint();
+
+            return checkpointChunk;
+        }
+
+        // Roll for a checkpoint.
+        float roll = Random.Range(0f, 100f);
+
+        if (roll < currentCheckpointChance)
+        {
+            SpawnedCheckpoint();
+
+            return checkpointChunk;
+        }
+
+        // No checkpoint this time.
+        chunksSinceCheckpoint++;
+
+        // Gradually increase the chance.
+        currentCheckpointChance = Mathf.Min(
+            currentCheckpointChance + checkpointChanceIncrease,
+            100f
+        );
+
+        return GetRandomNormalChunk();
+    }
+
+
+    GameObject GetRandomNormalChunk()
+    {
+        if (normalChunks == null || normalChunks.Length == 0)
+        {
+            Debug.LogError("LevelGenerator: No normal chunks have been assigned.");
+
+            return null;
+        }
+
+        return normalChunks[
+            Random.Range(0, normalChunks.Length)
+        ];
+    }
+
+
+    void SpawnedCheckpoint()
+    {
+        chunksSinceCheckpoint = 0;
+
+        currentCheckpointChance = checkpointChance;
+    }
+
+
     void MoveChunks()
     {
         foreach (GameObject chunk in chunks)
         {
+            if (chunk == null)
+            {
+                continue;
+            }
+
             chunk.transform.Translate(
                 Vector3.back * moveSpeed * Time.deltaTime,
                 Space.World
@@ -120,6 +233,7 @@ public class LevelGenerator : MonoBehaviour
             if (chunk == null)
             {
                 chunks.RemoveAt(i);
+
                 continue;
             }
 
@@ -138,6 +252,11 @@ public class LevelGenerator : MonoBehaviour
 
     void SpawnChunkAtFront()
     {
+        if (chunks.Count == 0)
+        {
+            return;
+        }
+
         float furthestZ =
             chunks[chunks.Count - 1].transform.position.z;
 
@@ -146,6 +265,13 @@ public class LevelGenerator : MonoBehaviour
             0f,
             furthestZ + chunkDistance
         );
+
+        GameObject chunkPrefab = GetRandomChunk();
+
+        if (chunkPrefab == null)
+        {
+            return;
+        }
 
         GameObject newChunk = Instantiate(
             chunkPrefab,
